@@ -1,0 +1,42 @@
+model Product {
+    id          String  @id @default(uuid())
+    name        String
+    price       Float
+    image       String
+    discount Int?
+    isActive Boolean @default(true)
+    description String?
+
+    categoryId String
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    brandId    String?
+    brand      Brand?      @relation(fields: [brandId], references: [id])
+    providerId String
+    provider   User        @relation(fields: [providerId], references: [id])
+    stock      Stock[]
+    order      Order[]
+    orderItem  OrderItem[]
+    review Review[]
+    cartItem   CartItem []   @relation("cartItemToProduct")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@index([categoryId])
+    @@index([brandId]) 
+    @@index([providerId])
+    @@index([isActive])
+}
+
+
+model Stock {
+  id         String   @id @default(uuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int      @default(0)
+  warehouse  String?  
+  batch      String?  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([productId])
+}
