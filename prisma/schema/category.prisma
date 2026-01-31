@@ -8,8 +8,10 @@ model Category {
   discount      Int?
   discountStart DateTime?
   discountEnd   DateTime?
+  providerId    String
   order         Int?      @default(0)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  provider      User      @relation("categoryProvider", fields: [providerId], references: [id])
   products      Product[]
 }

@@ -1,26 +1,21 @@
-import "dotenv/config";
-
-import express, { Application, Request, Response } from "express";
-import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
+import express, { Application } from "express";
 import { auth } from "./lib/auth";
+import errorHandler from "./middleware/globalErrorHandler";
+import { notFound } from "./middleware/notFound";
+import { userRouter } from "./modules/user/user.router";
 
 const app: Application = express();
-
-app.use(
-  cors({
-    origin: process.env.APP_URL || "http://localhost:3000",
-    credentials: true,
-  }),
-);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, World!");
+app.use(express.json());
+
+app.use("/api/v1/users", userRouter);
+
+app.get("/", (req, res) => {
+  res.send("FoodHub Backend is running");
 });
 
+app.use(notFound);
+app.use(errorHandler);
 export default app;

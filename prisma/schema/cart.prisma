@@ -1,8 +1,9 @@
 model Cart {
   id        String     @id @default(uuid())
-  userId    String     @unique
   createdAt DateTime   @default(now())
-  user      User       @relation("cart", fields: [userId], references: [id])
+  updatedAt DateTime   @updatedAt
+  userId    String     @unique
+  user      User       @relation("UserCarts", fields: [userId], references: [id])
   items     CartItem[]
 }
 
