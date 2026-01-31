@@ -1,0 +1,43 @@
+model OrderItem {
+  id        String      @id @default(uuid())
+  orderId   String
+  productId String
+  status    OrderStatus @default(PLACED)
+  quantity  Int
+  price     Float
+  order     Order       @relation(fields: [orderId], references: [id])
+  product   Product     @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id              String           @id @default(uuid())
+  userId          String
+  providerId      String?
+  status          OrderStatus      @default(PLACED)
+  total           Float
+  canCancel       Boolean          @default(true)
+  cancelledAt     DateTime?
+  notes           String?
+  deliveryAddress String
+  phone           String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  productId       String?
+  product         Product?         @relation(fields: [productId], references: [id])
+  provider        ProviderProfile? @relation("ProviderOrders", fields: [providerId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+
+  @@index([status])
+  @@index([providerId])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+enum OrderStatus {
+  PLACED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}

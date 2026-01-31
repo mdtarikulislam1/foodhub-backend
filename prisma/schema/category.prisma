@@ -1,0 +1,15 @@
+model Category {
+  id            String    @id @default(uuid())
+  name          String    @db.VarChar(50)
+  slug          String    @unique @db.VarChar(50)
+  image         String
+  description   String?   @db.VarChar(255)
+  isActive      Boolean   @default(true)
+  discount      Int?
+  discountStart DateTime?
+  discountEnd   DateTime?
+  order         Int?      @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
+}

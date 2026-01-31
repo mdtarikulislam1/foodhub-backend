@@ -1,0 +1,19 @@
+model ProviderProfile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  name         String
+  logo         String?
+  coverImage   String?
+  description  String?
+  phone        String
+  email        String?
+  address      String?
+  isActive     Boolean  @default(true)
+  workingHours String?
+  rating       Float    @default(0)
+  reviewCount  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orders       Order[]  @relation("ProviderOrders")
+  user         User     @relation("providerProfile", fields: [userId], references: [id])
+}
