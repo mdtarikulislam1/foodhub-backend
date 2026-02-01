@@ -1,8 +1,8 @@
 import { prisma } from "../../lib/prisma";
-import AppError from "../../middleware/error/similer.error";
 import { CreateBrandPayload } from "../../type/createBrand.type";
 import { User } from "../../type/user.type";
 import { normalizeName } from "../../helper/normalize";
+import AppError from "../../middleware/error/app.error";
 
 // create a brand
 const createBrand = async (data: CreateBrandPayload, user: User) => {

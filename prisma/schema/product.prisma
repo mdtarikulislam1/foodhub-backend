@@ -6,6 +6,7 @@ model Product {
   discount    Int?
   isActive    Boolean     @default(true)
   description String?
+  views      Int         @default(0)
   categoryId  String
   brandId     String?
   providerId  String
@@ -38,3 +39,5 @@ model Stock {
 
   @@index([productId])
 }
+
+

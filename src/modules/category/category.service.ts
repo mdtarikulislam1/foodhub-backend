@@ -1,6 +1,6 @@
 import { normalizeName } from "../../helper/normalize";
 import { prisma } from "../../lib/prisma";
-import AppError from "../../middleware/error/similer.error";
+import AppError from "../../middleware/error/app.error";
 import { Category } from "../../type/categorytype";
 import { User } from "../../type/user.type";
 

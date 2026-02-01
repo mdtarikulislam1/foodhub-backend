@@ -1,13 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 import { Prisma } from "../../../generated/prisma/client";
-
+import AppError from "./app.error";
 
 function errorHandler(
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
+  // AppError FIRST
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      message: err.message, // REAL MESSAGE
+    });
+  }
+
   let statusCode = 500;
   let errorMessage = "Internel Server Error";
   let errorDetails = err;
@@ -58,12 +66,11 @@ function errorHandler(
     errorMessage =
       "Database service is temporarily unavailable. Please try again later.";
   }
-  
 
   res.status(statusCode);
   res.json({
     message: errorMessage,
-    err: errorDetails,
+    errorDetails: errorDetails,
   });
 }
 

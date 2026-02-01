@@ -1,4 +1,4 @@
-import e, { Request, Response } from "express";
+import  { Request, Response } from "express";
 import { prisma } from "../../lib/prisma";
 
 import { categoryService } from "./category.service";
@@ -50,7 +50,6 @@ const getAllCategories = async (
 
     const categories = await categoryService.getAllCategories(user);
 
-    console.log(categories)
     res.status(200).json({
       message: "Categories retrieved successfully",
       status: true,
@@ -60,6 +59,7 @@ const getAllCategories = async (
     next(e);
   }
 };
+
 
 export const categoryController = {
   createCategory,

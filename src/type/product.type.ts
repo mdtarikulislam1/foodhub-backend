@@ -1,11 +1,10 @@
-export interface Product {
-  id: string;
+export interface CreateProduct {
   name: string;
-  description?: string;
+  description?: string | null;
+  categoryId: string;
   price: number;
   image: string;
-  isActive: boolean;
-  brandId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  brandId?: string | null;
+  discount?: number;
+  isActive?: boolean;
 }
