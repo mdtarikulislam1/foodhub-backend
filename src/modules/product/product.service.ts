@@ -12,11 +12,22 @@ const createProduct = async (data: CreateProduct, user: User) => {
   return product;
 };
 
+interface GetProductsOptions {
+  searchProductByName?: string | undefined;
+  categoryId?: string | undefined;
+}
 
-const getAllProducts = async (searchProductByName?: string) => {
+const getAllProducts = async ({
+  searchProductByName,
+  categoryId,
+}: GetProductsOptions) => {
   const whereCondition: any = {
     isActive: true,
   };
+
+  if (categoryId) {
+    whereCondition.categoryId = categoryId;
+  }
 
   if (searchProductByName) {
     whereCondition.OR = [
@@ -41,13 +52,16 @@ const getAllProducts = async (searchProductByName?: string) => {
   const products = await prisma.product.findMany({
     where: whereCondition,
     include: {
-      category: { select: { id: true, name: true } },
+      category: { select: { name: true } },
       brand: { select: { id: true, name: true } },
       provider: { select: { id: true, name: true } },
     },
+    orderBy: [
+      { ordersCount: "desc" },
+      { views: "desc" },
+      { createdAt: "desc" },
+    ],
   });
-
-  return products;
 
   return products;
 };

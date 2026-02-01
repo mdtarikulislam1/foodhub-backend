@@ -44,12 +44,15 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const searchProductByName = req.query.searchProductByName as string | undefined;
+  const searchProductByName = req.query.searchProductByName as
+    | string
+    | undefined;
+  const categoryId = req.query.categoryId as string | undefined;
 
-  if (searchProductByName) {
-    // Implement search functionality if needed
-  }
-  const products = await productService.getAllProducts(searchProductByName);
+  const products = await productService.getAllProducts({
+    searchProductByName,
+    categoryId,
+  });
   res.status(200).json({
     status: "success",
     data: products,
