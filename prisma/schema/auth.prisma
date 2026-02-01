@@ -16,6 +16,7 @@ model User {
   review          Review[]
   accounts        Account[]
   sessions        Session[]
+  brands         Brand[]          @relation("brandRel")
 
   @@map("user")
 }

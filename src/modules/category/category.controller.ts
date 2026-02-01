@@ -1,8 +1,9 @@
 import e, { Request, Response } from "express";
 import { prisma } from "../../lib/prisma";
-import { brandService } from "./brand.service";
 
-const createBrand = async (req: Request, res: Response, next: Function) => {
+import { categoryService } from "./category.service";
+
+const createCategory = async (req: Request, res: Response, next: Function) => {
   try {
     const user = req.user;
 
@@ -16,10 +17,10 @@ const createBrand = async (req: Request, res: Response, next: Function) => {
     const data = req.body;
     data.providerId = user.id;
 
-    const result = await brandService.createBrand(data, user);
+    const result = await categoryService.createCategory(data, user);
 
     res.status(200).json({
-      message: "Brand created successfully",
+      message: "Category created successfully",
       status: true,
       data: result,
     });
@@ -31,7 +32,11 @@ const createBrand = async (req: Request, res: Response, next: Function) => {
   }
 };
 
-const getAllBrands = async (req: Request, res: Response, next: Function) => {
+const getAllCategories = async (
+  req: Request,
+  res: Response,
+  next: Function,
+) => {
   try {
     const user = req.user;
 
@@ -42,21 +47,21 @@ const getAllBrands = async (req: Request, res: Response, next: Function) => {
       });
     }
 
-    // const data = req.body;
-    // data.providerId = user.id;
 
-    const brands = await brandService.getAllBrands(user);
+    const categories = await categoryService.getAllCategories(user);
+
+    console.log(categories)
     res.status(200).json({
-      message: "Brands retrieved successfully",
+      message: "Categories retrieved successfully",
       status: true,
-      data: brands, 
+      data: categories,
     });
   } catch (e) {
     next(e);
   }
 };
 
-export const brandController = {
-  createBrand,
-  getAllBrands,
+export const categoryController = {
+  createCategory,
+  getAllCategories,
 };

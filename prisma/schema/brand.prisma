@@ -1,15 +1,23 @@
 model Brand {
-  id          String    @id @default(uuid())
-  name        String    @db.VarChar(100)
-  slug        String    @unique
-  description String?   @db.VarChar(255)
-  image       String
-  isActive    Boolean   @default(true)
-  website     String?
-  instagram   String?
-  discount    Int?
-  facebook    String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
+  id            String    @id @default(uuid())
+  name          String    @db.VarChar(100)
+  slug          String   
+  description   String?   @db.VarChar(255)
+  image         String?
+  isActive      Boolean   @default(true)
+  providerId    String
+  provider      User      @relation("brandRel", fields: [providerId], references: [id])
+  website       String?
+  instagram     String?
+  discount      Int?
+  discountStart DateTime?
+  discountEnd   DateTime?
+  facebook      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
+
+  @@unique([providerId, name])
+  @@unique([providerId, slug])
+  @@index([providerId])
 }

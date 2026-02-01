@@ -1,11 +1,11 @@
+import { normalizeName } from "../../helper/normalize";
 import { prisma } from "../../lib/prisma";
 import AppError from "../../middleware/error/similer.error";
-import { CreateBrandPayload } from "../../type/createBrand.type";
+import { Category } from "../../type/categorytype";
 import { User } from "../../type/user.type";
-import { normalizeName } from "../../helper/normalize";
 
-// create a brand
-const createBrand = async (data: CreateBrandPayload, user: User) => {
+// create a category
+const createCategory = async (data: Category, user: User) => {
   const normalizedName = normalizeName(data.name);
 
   const slug = data.slug
@@ -21,12 +21,13 @@ const createBrand = async (data: CreateBrandPayload, user: User) => {
 
   if (existing) {
     throw new AppError(
-      "You already have a brand with this name or slug",
+      "You already have a category with this name or slug",
       400,
     );
   }
 
-  const brand = await prisma.brand.create({
+  // create category
+  const category = await prisma.category.create({
     data: {
       ...data,
       providerId: user.id,
@@ -35,19 +36,19 @@ const createBrand = async (data: CreateBrandPayload, user: User) => {
     },
   });
 
-  return brand;
+  return category;
 };
 
-// get all brands for a provider
-const getAllBrands = async (user: User) => {
-  return prisma.brand.findMany({
+// get all categories for a provider
+const getAllCategories = async (user: User) => {
+  return prisma.category.findMany({
     where: {
       providerId: user.id,
     },
   });
 };
 
-export const brandService = {
-  createBrand,
-  getAllBrands,
+export const categoryService = {
+  createCategory,
+  getAllCategories,
 };

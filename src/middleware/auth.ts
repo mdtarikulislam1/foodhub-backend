@@ -17,6 +17,7 @@ declare global {
         name: string;
         role: string;
         emailVerified: boolean;
+        status: string;
       };
     }
   }
@@ -42,16 +43,31 @@ const auth = (...roles: UserRole[]) => {
     //     });
     //   }
 
-    console.log(session)
 
-      req.user = {
+      const user = req.user = {
         id: session.user.id,
         email: session.user.email,
         name: session.user.name,
         role: session.user.role as string,
         emailVerified: session.user.emailVerified,
+        status: session.user.status as string,
       };
-      if (roles.length && !roles.includes(req.user.role as UserRole)) {
+
+      if(!user){
+        return res.status(401).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+     if(user.status !== "ACTIVE"){
+        return res.status(401).json({
+          success: false,
+          message: "Your account is not active. please contact support",
+        });
+     }
+
+      if (roles.length && !roles.includes(user.role as UserRole)) {
         return res.status(401).json({
           success: false,
           message:

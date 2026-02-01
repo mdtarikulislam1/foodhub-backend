@@ -3,6 +3,6 @@ import { userController } from "./user.controller";
 import auth, { UserRole } from "../../middleware/auth";
 
 const router = Router();
-router.get("/",  userController.getAllUsers);
+router.get("/",auth(UserRole.ADMIN), userController.getAllUsers);
 
-export const userRouter = router;
+export const userRouter:Router =  router 
