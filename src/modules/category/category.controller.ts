@@ -1,4 +1,4 @@
-import  { Request, Response } from "express";
+import { Request, Response } from "express";
 import { prisma } from "../../lib/prisma";
 
 import { categoryService } from "./category.service";
@@ -15,9 +15,8 @@ const createCategory = async (req: Request, res: Response, next: Function) => {
     }
 
     const data = req.body;
-    data.providerId = user.id;
 
-    const result = await categoryService.createCategory(data, user);
+    const result = await categoryService.createCategory(data);
 
     res.status(200).json({
       message: "Category created successfully",
@@ -26,11 +25,12 @@ const createCategory = async (req: Request, res: Response, next: Function) => {
     });
   } catch (e: any) {
     res.status(400).json({
-      status: false,
+      status: false, 
       message: e.message || "Something went wrong",
     });
   }
 };
+
 
 const getAllCategories = async (
   req: Request,
@@ -47,8 +47,7 @@ const getAllCategories = async (
       });
     }
 
-
-    const categories = await categoryService.getAllCategories(user);
+    const categories = await categoryService.getAllCategories();
 
     res.status(200).json({
       message: "Categories retrieved successfully",
@@ -60,8 +59,11 @@ const getAllCategories = async (
   }
 };
 
-
 export const categoryController = {
   createCategory,
   getAllCategories,
 };
+
+
+
+

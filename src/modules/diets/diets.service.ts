@@ -1,17 +1,18 @@
 import { normalizeName } from "../../helper/normalize";
 import { prisma } from "../../lib/prisma";
 import AppError from "../../middleware/error/app.error";
-import { Category } from "../../type/product.type";
+import { CreateDiet } from "../../type/product.type";
 
-// create a category
-const createCategory = async (data: Category,) => {
+
+// create a diet
+const createDiet = async (data: CreateDiet,) => {
   const normalizedName = normalizeName(data.name);
 
   const slug = data.slug
     ? normalizeName(data.slug, true)
     : normalizeName(data.name, true);
 
-  const existing = await prisma.category.findFirst({
+  const existing = await prisma.diet.findFirst({
     where: {
       OR: [{ name: { equals: normalizedName, mode: "insensitive" } }, { slug }],
     },
@@ -19,13 +20,13 @@ const createCategory = async (data: Category,) => {
 
   if (existing) {
     throw new AppError(
-      "You already have a category with this name or slug",
+      "You already have a diet with this name or slug",
       400,
     );
   }
 
-  // create category
-  const category = await prisma.category.create({
+  // create diet
+  const category = await prisma.diet.create({
     data: {
       ...data,
       name: data.name.trim(),
@@ -37,11 +38,11 @@ const createCategory = async (data: Category,) => {
 };
 
 // get all categories for a provider
-const getAllCategories = async () => {
-  return prisma.category.findMany();
+const getAllDiets  = async () => {
+  return prisma.diet.findMany();
 };
 
-export const categoryService = {
-  createCategory,
-  getAllCategories,
+export const dietService = {
+  createDiet,
+  getAllDiets,
 };

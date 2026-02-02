@@ -9,6 +9,8 @@ import errorHandler from "./middleware/error/globalErrorHandler";
 import { categoryRouter } from "./modules/category/category.router";
 import { providerProfileRouter } from "./modules/providerProfile/provider.router";
 import { productRouter } from "./modules/product/product.router";
+import { dietRouter } from "./modules/diets/diets.router";
+import { orderRouter } from "./modules/order/order.router";
 
 const app: Application = express();
 app.all("/api/auth/*splat", toNodeHandler(auth));
@@ -20,6 +22,8 @@ app.use("/api/v1/brands", brandRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/providerProfile", providerProfileRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/diets", dietRouter);
+app.use("/api/v1/orders", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("FoodHub Backend is running");

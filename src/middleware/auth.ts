@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from "express";
 
 export enum UserRole {
   ADMIN = "ADMIN",
-  USER = "USER",
   PROVIDER = "PROVIDER",
   CUSTOMER = "CUSTOMER",        
 }
