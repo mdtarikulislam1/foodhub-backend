@@ -207,6 +207,16 @@ const updateOrderStatus = async (
       throw new AppError("This order item cannot be updated", 400);
     }
 
+    // Allow ADMIN or PROVIDER to set DELIVERED, but never allow direct PLACED -> DELIVERED
+    if (newStatus === OrderItemStatus.DELIVERED) {
+      if (role !== UserRole.ADMIN && role !== UserRole.PROVIDER) {
+        throw new AppError("Only admin or provider can set an item status to DELIVERED", 403);
+      }
+      if (orderItem.status === OrderItemStatus.PLACED) {
+        throw new AppError("Cannot set an item to DELIVERED directly from PLACED. Update status to SHIPPED first.", 400);
+      }
+    }
+
     // Validate transition
     if (orderItem.status !== newStatus) {
       const allowed = allowedTransitions[orderItem.status as OrderItemStatus] || [];

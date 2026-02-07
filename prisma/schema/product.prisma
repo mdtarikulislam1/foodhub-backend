@@ -9,13 +9,11 @@ model Product {
   views       Int           @default(0)
   ordersCount Int           @default(0)
   categoryId  String
-  brandId     String?
   providerId  String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   cartItem    CartItem[]    @relation("cartItemToProduct")
   orderItem   OrderItem[]
-  brand       Brand?        @relation(fields: [brandId], references: [id])
   category    Category      @relation(fields: [categoryId], references: [id])
   provider    User          @relation(fields: [providerId], references: [id])
   review      Review[]
@@ -23,7 +21,6 @@ model Product {
   diets       ProductDiet[]
 
   @@index([categoryId])
-  @@index([brandId])
   @@index([providerId])
   @@index([isActive])
 }
@@ -55,7 +52,6 @@ model Category {
 
   products Product[]
 
-  userId String?
 }
 
 model Diet {

@@ -4,7 +4,7 @@ import AppError from "../../middleware/error/app.error";
 import { Category } from "../../type/product.type";
 
 // create a category
-const createCategory = async (data: Category,) => {
+const createCategory = async (data: Category) => {
   const normalizedName = normalizeName(data.name);
 
   const slug = data.slug
@@ -24,12 +24,12 @@ const createCategory = async (data: Category,) => {
     );
   }
 
-  // create category
   const category = await prisma.category.create({
     data: {
-      ...data,
       name: data.name.trim(),
       slug,
+      image: data.image ?? null,
+      description: data.description ?? null,
     },
   });
 
